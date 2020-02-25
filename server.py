@@ -1,6 +1,6 @@
-import socket
 import threading
 import socketserver
+
 
 class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
 
@@ -10,12 +10,14 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
         response = bytes("{}: {}".format(cur_thread.name, data), 'ascii')
         self.request.sendall(response)
 
+
 class ThreadedTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
     pass
 
+
 if __name__ == "__main__":
     # Port 0 means to select an arbitrary unused port
-    HOST, PORT = "localhost", 0
+    HOST, PORT = "localhost", 5555
 
     server = ThreadedTCPServer((HOST, PORT), ThreadedTCPRequestHandler)
     with server:
@@ -29,4 +31,4 @@ if __name__ == "__main__":
         server_thread.start()
         print("Server loop running in thread:", server_thread.name)
 
-        server.shutdown()
+        server.serve_forever()
