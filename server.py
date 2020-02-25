@@ -5,6 +5,7 @@ import socketserver
 class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
 
     def handle(self):
+        print(self.client_address)
         data = str(self.request.recv(1024), 'ascii')
         cur_thread = threading.current_thread()
         response = bytes("{}: {}".format(cur_thread.name, data), 'ascii')

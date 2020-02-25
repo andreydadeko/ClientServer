@@ -1,11 +1,23 @@
 import socket
 
-def client(ip, port, message):
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
-        sock.connect((ip, port))
-        sock.sendall(bytes(message, 'ascii'))
-        response = str(sock.recv(1024), 'ascii')
+class client():
+
+    def connect(self, ip, port):
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.sock.connect((ip, port))
+
+    def send_message(self, message):
+        self.sock.send(message)
+        response = str(self.sock.recv(1024), 'ascii')
         print("Received: {}".format(response))
 
+    def disconect(self):
+        self.sock.close()
+
+CL = client()
+
 for i in range(20):
-    client('localhost', 5555, i.__str__())
+    CL.connect('localhost', 5555,)
+    for k in range(5):
+        CL.send_message(k)
+    #CL.disconect()
